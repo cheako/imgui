@@ -1315,6 +1315,7 @@ struct ImGuiContext
     int                     WantCaptureMouseNextFrame;          // Explicit capture via CaptureKeyboardFromApp()/CaptureMouseFromApp() sets those flags
     int                     WantCaptureKeyboardNextFrame;
     int                     WantTextInputNextFrame;
+    ImGuiTextureCallback    TextureCallback;
     char                    TempBuffer[1024*3+1];               // Temporary text buffer
 
     ImGuiContext(ImFontAtlas* shared_font_atlas) : BackgroundDrawList(&DrawListSharedData), ForegroundDrawList(&DrawListSharedData)
@@ -1451,6 +1452,7 @@ struct ImGuiContext
         FramerateSecPerFrameIdx = 0;
         FramerateSecPerFrameAccum = 0.0f;
         WantCaptureMouseNextFrame = WantCaptureKeyboardNextFrame = WantTextInputNextFrame = -1;
+        TextureCallback = NULL;
         memset(TempBuffer, 0, sizeof(TempBuffer));
     }
 };
@@ -2013,6 +2015,7 @@ namespace ImGui
     inline void             DebugDrawItemRect(ImU32 col = IM_COL32(255,0,0,255))    { ImGuiContext& g = *GImGui; ImGuiWindow* window = g.CurrentWindow; GetForegroundDrawList(window)->AddRect(window->DC.LastItemRect.Min, window->DC.LastItemRect.Max, col); }
     inline void             DebugStartItemPicker()                                  { ImGuiContext& g = *GImGui; g.DebugItemPickerActive = true; }
 
+    inline void             SetTextureCallback(ImGuiTextureCallback cb)             { ImGuiContext& g = *GImGui; g.TextureCallback = cb; }
 } // namespace ImGui
 
 // ImFontAtlas internals

@@ -563,6 +563,10 @@ void ImDrawList::PushTextureID(ImTextureID texture_id)
     _TextureIdStack.push_back(texture_id);
     _CmdHeader.TextureId = texture_id;
     _OnChangedTextureID();
+    ImGuiContext &g = *GImGui;
+    if (g.TextureCallback) {
+        g.TextureCallback(texture_id);
+    }
 }
 
 void ImDrawList::PopTextureID()
